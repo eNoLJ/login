@@ -3,6 +3,7 @@ package com.login.domain;
 import com.login.web.dto.request.UserInfoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import javax.persistence.Id;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 public class User {
 
     @Id
@@ -30,5 +32,9 @@ public class User {
                 .password(userInfoDTO.getPassword())
                 .name(userInfoDTO.getName())
                 .build();
+    }
+
+    public void saveToken(String token) {
+        this.token = token;
     }
 }

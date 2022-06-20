@@ -3,6 +3,7 @@ package com.login.service;
 import com.login.domain.User;
 import com.login.domain.UserRepository;
 import com.login.excption.DoubleCheckException;
+import com.login.excption.UserNotFoundException;
 import com.login.web.dto.request.UserInfoDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,19 @@ public class UserService {
         userRepository.save(User.create(userInfoDTO));
     }
 
+    public UserInfoDTO login(UserInfoDTO userInfoDTO) {
+        User user = findByEmailAndPassword(userInfoDTO.getEmail(), userInfoDTO.getPassword());
+        String token = "임시토큰";
+        user.saveToken(token);
+        userRepository.save(user);
+        return UserInfoDTO.createLoginInfo(user);
+    }
+
     private boolean doubleCheck(String email) {
         return userRepository.findByEmail(email).isPresent();
+    }
+
+    private User findByEmailAndPassword(String email, String password) {
+        return userRepository.findByEmailAndPassword(email, password).orElseThrow(UserNotFoundException::new);
     }
 }

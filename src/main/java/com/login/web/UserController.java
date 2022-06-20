@@ -15,12 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api")
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping("/signUp")
     public void signUp(@RequestBody UserInfoDTO userInfoDTO) {
-        logger.debug("회원가입 요청");
+        logger.info("회원가입 요청");
         userService.save(userInfoDTO);
+    }
+
+    @PostMapping("/login")
+    public UserInfoDTO login(@RequestBody UserInfoDTO userInfoDTO) {
+        logger.info("로그인 요청");
+        return userService.login(userInfoDTO);
     }
 }
