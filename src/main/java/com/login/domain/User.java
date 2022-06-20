@@ -1,5 +1,6 @@
 package com.login.domain;
 
+import com.login.web.dto.request.UserInfoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -22,4 +23,12 @@ public class User {
     private String password;
     private String name;
     private String token;
+
+    public static User create(UserInfoDTO userInfoDTO) {
+        return User.builder()
+                .email(userInfoDTO.getEmail())
+                .password(userInfoDTO.getPassword())
+                .name(userInfoDTO.getName())
+                .build();
+    }
 }
