@@ -37,4 +37,8 @@ public class User {
     public void saveToken(String token) {
         this.token = token;
     }
+
+    public void removeToken() {
+        token = null;
+    }
 }

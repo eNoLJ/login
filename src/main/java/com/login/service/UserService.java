@@ -29,11 +29,21 @@ public class UserService {
         return UserInfoDTO.createLoginInfo(user);
     }
 
+    public void logout(UserInfoDTO userInfoDTO) {
+        User user = findById(userInfoDTO.getId());
+        user.removeToken();
+        userRepository.save(user);
+    }
+
     private boolean doubleCheck(String email) {
         return userRepository.findByEmail(email).isPresent();
     }
 
     private User findByEmailAndPassword(String email, String password) {
         return userRepository.findByEmailAndPassword(email, password).orElseThrow(UserNotFoundException::new);
+    }
+
+    private User findById(Long id) {
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 }

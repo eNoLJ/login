@@ -29,4 +29,10 @@ public class UserController {
         logger.info("로그인 요청");
         return userService.login(userInfoDTO);
     }
+
+    @PostMapping("/logout")
+    public void logout(@RequestBody UserInfoDTO userInfoDTO) {
+        logger.info("로그아웃 요청");
+        userService.logout(userInfoDTO);
+    }
 }
