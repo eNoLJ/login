@@ -1,5 +1,7 @@
 package com.login.service;
 
+import com.login.auth.exception.InvalidTokenException;
+import com.login.auth.service.JwtService;
 import com.login.domain.User;
 import com.login.domain.UserRepository;
 import com.login.excption.DoubleCheckException;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final JwtService jwtService;
 
     public void save(UserInfoDTO userInfoDTO) {
         if (doubleCheck(userInfoDTO.getEmail())) {
@@ -23,16 +26,23 @@ public class UserService {
 
     public UserInfoDTO login(UserInfoDTO userInfoDTO) {
         User user = findByEmailAndPassword(userInfoDTO.getEmail(), userInfoDTO.getPassword());
-        String token = "임시토큰";
-        user.saveToken(token);
+        user.saveToken(jwtService.createToken(user));
         userRepository.save(user);
         return UserInfoDTO.createLoginInfo(user);
     }
 
-    public void logout(UserInfoDTO userInfoDTO) {
-        User user = findById(userInfoDTO.getId());
+    public void logout(String auth) {
+        User user = findById(jwtService.getIdByAuth(auth));
         user.removeToken();
         userRepository.save(user);
+    }
+
+    public UserInfoDTO viewMyInfo(String auth) {
+        User user = findById(jwtService.getIdByAuth(auth));
+        if (user.getToken() == null) {
+            throw new InvalidTokenException();
+        }
+        return UserInfoDTO.createMyInfo(user);
     }
 
     private boolean doubleCheck(String email) {

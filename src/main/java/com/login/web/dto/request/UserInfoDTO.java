@@ -16,8 +16,15 @@ public class UserInfoDTO {
 
     public static UserInfoDTO createLoginInfo(User user) {
         return UserInfoDTO.builder()
-                .id(user.getId())
                 .token(user.getToken())
+                .build();
+    }
+
+    public static UserInfoDTO createMyInfo(User user) {
+        return UserInfoDTO.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .name(user.getName())
                 .build();
     }
 }
