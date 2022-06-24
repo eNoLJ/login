@@ -21,7 +21,8 @@ public class JwtService {
     }
 
     public Long getIdByAuth(String auth) {
-        return Long.parseLong(parseToken(auth).getId());
+        String token = getToken(auth);
+        return ((Number) parseToken(token).get("id")).longValue();
     }
 
     private Claims parseToken(String token) {
