@@ -36,10 +36,10 @@ public class UserController {
         userService.logout(auth);
     }
 
-    @GetMapping("/myInfo")
-    public UserInfoDTO viewMyInfo(@RequestHeader("Authorization") String auth) {
-        logger.info("내 정보 조회");
-        return userService.viewMyInfo(auth);
+    @GetMapping("/userInfo")
+    public UserInfoDTO viewUserInfo(@RequestHeader("Authorization") String auth) {
+        logger.info("유저 정보 조회 요청");
+        return userService.viewUserInfo(auth);
     }
 
     @PatchMapping("/userInfo")

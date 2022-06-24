@@ -20,7 +20,7 @@ public class UserInfoDTO {
                 .build();
     }
 
-    public static UserInfoDTO createMyInfo(User user) {
+    public static UserInfoDTO createUserInfo(User user) {
         return UserInfoDTO.builder()
                 .id(user.getId())
                 .email(user.getEmail())

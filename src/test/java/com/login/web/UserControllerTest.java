@@ -98,12 +98,12 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("내 정보 조회 기능")
+    @DisplayName("유저 정보 조회 기능")
     void viewMyInfo() {
         // 내 정보 조회 성공
         headers.put("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2dpblNlcnZpY2UiLCJpZCI6MX0.Zy1LYiSo5R_ILob8UuuFJeNxZJCGsVBcBu4WR37GzwQ");
 
-        response = request("GET", "/api/myInfo", headers, body);
+        response = request("GET", "/api/userInfo", headers, body);
 
         softly.assertThat(response.jsonPath().getString("id")).isEqualTo("1");
         softly.assertThat(response.jsonPath().getString("email")).isEqualTo("derosatam76@gmail.com");
@@ -112,7 +112,7 @@ class UserControllerTest {
         // 내 정보 조회 실패
         headers.put("Authorization", "Bearer invalid token");
 
-        response = request("GET", "/api/myInfo", headers, body);
+        response = request("GET", "/api/userInfo", headers, body);
 
         softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
     }

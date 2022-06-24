@@ -1,12 +1,12 @@
 package com.login.service;
 
-import com.login.auth.exception.InvalidTokenException;
 import com.login.auth.service.JwtService;
 import com.login.domain.User;
 import com.login.domain.UserRepository;
 import com.login.excption.DoubleCheckException;
 import com.login.excption.UserNotFoundException;
 import com.login.web.dto.request.UserInfoDTO;
+import com.login.web.dto.request.UserInfoUpdateDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +37,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public UserInfoDTO viewMyInfo(String auth) {
+    public UserInfoDTO viewUserInfo(String auth) {
         User user = findById(jwtService.getIdByAuth(auth));
         return UserInfoDTO.createUserInfo(user);
     }
