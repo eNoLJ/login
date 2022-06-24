@@ -1,10 +1,8 @@
 package com.login.domain;
 
 import com.login.web.dto.request.UserInfoDTO;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.login.web.dto.request.UserInfoUpdateDTO;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,6 +14,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@EqualsAndHashCode
 public class User {
 
     @Id
@@ -40,5 +39,10 @@ public class User {
 
     public void removeToken() {
         token = null;
+    }
+
+    public void update(UserInfoUpdateDTO userInfoUpdateDTO) {
+        this.password = userInfoUpdateDTO.getNewPassword();
+        this.name = userInfoUpdateDTO.getName();
     }
 }

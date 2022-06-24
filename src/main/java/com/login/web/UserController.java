@@ -2,9 +2,11 @@ package com.login.web;
 
 import com.login.service.UserService;
 import com.login.web.dto.request.UserInfoDTO;
+import com.login.web.dto.request.UserInfoUpdateDTO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,6 +18,7 @@ public class UserController {
     private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping("/signUp")
+    @ResponseStatus(code = HttpStatus.CREATED)
     public void signUp(@RequestBody UserInfoDTO userInfoDTO) {
         logger.info("회원가입 요청");
         userService.save(userInfoDTO);
@@ -37,5 +40,11 @@ public class UserController {
     public UserInfoDTO viewMyInfo(@RequestHeader("Authorization") String auth) {
         logger.info("내 정보 조회");
         return userService.viewMyInfo(auth);
+    }
+
+    @PatchMapping("/userInfo")
+    public void updateUserInfo(@RequestHeader("Authorization") String auth, @RequestBody UserInfoUpdateDTO userInfoUpdateDTO) {
+        logger.info("유저 정보 수정 요청");
+        userService.updateUserInfo(auth, userInfoUpdateDTO);
     }
 }

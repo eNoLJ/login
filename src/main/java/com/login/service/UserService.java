@@ -39,10 +39,16 @@ public class UserService {
 
     public UserInfoDTO viewMyInfo(String auth) {
         User user = findById(jwtService.getIdByAuth(auth));
-        if (user.getToken() == null) {
-            throw new InvalidTokenException();
+        return UserInfoDTO.createUserInfo(user);
+    }
+
+    public void updateUserInfo(String auth, UserInfoUpdateDTO userInfoUpdateDTO) {
+        User user = findById(jwtService.getIdByAuth(auth));
+        User targetUser = findByEmailAndPassword(userInfoUpdateDTO.getEmail(), userInfoUpdateDTO.getCurrentPassword());
+        if (user.equals(targetUser)) {
+            user.update(userInfoUpdateDTO);
+            userRepository.save(user);
         }
-        return UserInfoDTO.createMyInfo(user);
     }
 
     private boolean doubleCheck(String email) {
