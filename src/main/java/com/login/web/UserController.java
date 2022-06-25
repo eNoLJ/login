@@ -47,4 +47,10 @@ public class UserController {
         logger.info("유저 정보 수정 요청");
         userService.updateUserInfo(auth, userInfoUpdateDTO);
     }
+
+    @DeleteMapping("/user")
+    public void deleteUser(@RequestHeader("Authorization") String auth, @RequestBody UserInfoDTO userInfoDTO) {
+        logger.info("회원 탈퇴 요청");
+        userService.deleteUser(auth, userInfoDTO);
+    }
 }

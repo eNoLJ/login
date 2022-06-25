@@ -4,6 +4,7 @@ import com.login.auth.service.JwtService;
 import com.login.domain.User;
 import com.login.domain.UserRepository;
 import com.login.excption.DoubleCheckException;
+import com.login.excption.InvalidUserException;
 import com.login.excption.UserNotFoundException;
 import com.login.web.dto.request.UserInfoDTO;
 import com.login.web.dto.request.UserInfoUpdateDTO;
@@ -49,6 +50,15 @@ public class UserService {
             user.update(userInfoUpdateDTO);
             userRepository.save(user);
         }
+    }
+
+    public void deleteUser(String auth, UserInfoDTO userInfoDTO) {
+        User user = findById(jwtService.getIdByAuth(auth));
+        User targetUser = findByEmailAndPassword(userInfoDTO.getEmail(), userInfoDTO.getPassword());
+        if (!user.equals(targetUser)) {
+            throw new InvalidUserException();
+        }
+        userRepository.delete(user);
     }
 
     private boolean doubleCheck(String email) {
