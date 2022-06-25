@@ -46,10 +46,13 @@ public class UserService {
     public void updateUserInfo(String auth, UserInfoUpdateDTO userInfoUpdateDTO) {
         User user = findById(jwtService.getIdByAuth(auth));
         User targetUser = findByEmailAndPassword(userInfoUpdateDTO.getEmail(), userInfoUpdateDTO.getCurrentPassword());
-        if (user.equals(targetUser)) {
-            user.update(userInfoUpdateDTO);
-            userRepository.save(user);
+        if (!user.equals(targetUser)) {
+            if (!user.equals(targetUser)) {
+                throw new InvalidUserException();
+            }
         }
+        user.update(userInfoUpdateDTO);
+        userRepository.save(user);
     }
 
     public void deleteUser(String auth, UserInfoDTO userInfoDTO) {
