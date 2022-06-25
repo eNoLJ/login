@@ -117,6 +117,29 @@ class UserControllerTest {
         softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
     }
 
+    @Test
+    @DisplayName("회원 정보 수정 기능")
+    void updateUserInfo() {
+        // 회원 정보 수정 성공
+        headers.put("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2dpblNlcnZpY2UiLCJpZCI6MX0.Zy1LYiSo5R_ILob8UuuFJeNxZJCGsVBcBu4WR37GzwQ");
+        body.put("email", "derosatam76@gmail.com");
+        body.put("currentPassword", "asdzxc");
+        body.put("newPassword", "123456");
+        body.put("name", "eno");
+
+        response = request("PATCH", "/api/userInfo", headers, body);
+
+        softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value());
+
+        // 회원 정보 수정 실패
+        body.put("email", "dummyuser@gmail.com");
+        body.put("currentPassword", "qwerty");
+
+        response = request("PATCH", "/api/userInfo", headers, body);
+
+        softly.assertThat(response.statusCode()).isEqualTo(HttpStatus.UNAUTHORIZED.value());
+    }
+
     private ExtractableResponse<Response> request(String method, String url, Map<String, String> headers, Map<String, String> body) {
         return RestAssured
                 .given().log().all()
